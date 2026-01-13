@@ -25,13 +25,17 @@
 
 A data type is a category for values, and every value belongs to exactly one data type.
 
-| Type | Examples |
-|------|----------|
-| **Integers** | `-2, -1, 0, 1, 2` |
-| **Float** | `-1.25, -1.0, -0.5, 0.0, 0.5` |
-| **Strings** | `'a'`, `'aa'`, `'aaa'`, `'Hello World'`, `' '` |
-| **Boolean** | `True` / `False` |
-| **None** | `None` |
+| Type | Examples | Notes |
+|------|----------|---------|
+| **Integers** | `-2, -1, 0, 1, 2` ||
+| **Float** | `-1.25, -1.0, -0.5, 0.0, 0.5` ||
+| **Strings** | `'a'`, `'aa'`, `'aaa'`, `'Hello World'`, `' '` ||
+| **Boolean** | `True` / `False`  | (Case Sensitive) |
+| **None** | `None` ||
+| **ghib** | Variable | Non Literal
+
+**Note:** A Literal means information written as it meant to be interpretted.
+**Furthermore:** = is ASSIGNMENT. Goes from right to left. (example: age = 3 | 3 is ASSIGNED to age)
 
 ---
 
