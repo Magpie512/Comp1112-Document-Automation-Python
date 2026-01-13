@@ -27,12 +27,12 @@ A data type is a category for values, and every value belongs to exactly one dat
 | None     | None                                     |
 ## String Concatenation and Replication
 ---
-+ + Means addition when two operands are ints or floating point numbers
-+ + means concatenation (putting together) when the two operands are strings
++ \* Means addition when two operands are ints or floating point numbers
++ \* Means concatenation (putting together) when the two operands are strings
 + >>> 'alice' + 'henry' results in - alicehenry
 	'alice' + 42 results in an error ( cannot convert 'int' object to a Str object implicitly)
-+ * means multiplication when the operands are ints or floating point nmbers
-+ * means String replication when the operands are one string and one int 
++ \* Means multiplication when the operands are ints or floating point nmbers
++ \* Means String replication when the operands are one string and one int 
 	'alice' * 3 results in 'alicealicealice'
 
 ## Course Coding Conventions
