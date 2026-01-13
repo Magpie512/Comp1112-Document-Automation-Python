@@ -40,7 +40,7 @@ A data type is a category for values, and every value belongs to exactly one dat
 ### Addition (`+`)
 - **With numbers**: `2 + 3 = 5`
 - **With strings**: `'alice' + 'henry'` → `'alicehenry'`
-- ⚠️ **Error**: `'alice' + 42` (cannot mix string and int)
+- **Error**: `'alice' + 42` (cannot mix string and int)
 
 ### Multiplication (`*`)
 - **With numbers**: `3 * 5 = 15`
@@ -55,6 +55,7 @@ A data type is a category for values, and every value belongs to exactly one dat
 - ❌ No spaces
 - ❌ Cannot begin with a number
 - ❌ No special characters (e.g., `$`)
+
 - ✅ Case sensitive
 - ✅ Use **camelCase** (start with lowercase, capitalize subsequent words)
 	- Example: `myVariableName`
@@ -128,6 +129,5 @@ str(45)         # Returns '45'
 float('3.14')   # Returns 3.14
 int('100')      # Returns 100
 ```
-
-💡 **Note**: The `input()` function always returns a string, so use `int()` or `float()` to convert user input for calculations.
+**Note**: The `input()` function always returns a string, so use `int()` or `float()` to convert user input for calculations.
 
