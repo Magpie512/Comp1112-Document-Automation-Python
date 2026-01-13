@@ -3,7 +3,7 @@
 | Operator | Symbol | Example | Notes |
 |----------|--------|---------|-------|
 | **Exponent** | `**` | `2 ** 3 = 8` | |
-| **Modulus** | `%` | `22 % 8 = 6` | Calculates Remainder|
+| **Modulus** | `%` | `22 % 8 = 6` | Calculates Remainder (Odd # gets 1 while Even # gets 0)|
 | **Integer Division** | `//` | `22 // 8 = 2`  | Truncates the decimal portion and returns an integer only |
 | **True Division** | `/` | `22 / 8 = 2.75` | Returns the floating point quotient |
 | **Multiplication** | `*` | `3 * 5 = 15` | |
