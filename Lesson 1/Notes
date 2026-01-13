@@ -1,112 +1,133 @@
-## Python Operators
+# Python Operators
+
+| Operator | Symbol | Example | Notes |
+|----------|--------|---------|-------|
+| **Exponent** | `**` | `2 ** 3 = 8` | |
+| **Modulus** | `%` | `22 % 8 = 6` | |
+| **Integer Division** | `//` | `22 // 8 = 2` | Truncates the decimal portion and returns an integer only |
+| **True Division** | `/` | `22 / 8 = 2.75` | Returns the floating point quotient |
+| **Multiplication** | `*` | `3 * 5 = 15` | |
+| **Subtraction** | `-` | `5 - 2 = 3` | |
+| **Addition** | `+` | `2 + 2 = 4` | |
+
 ---
 
-| **Exponent**                 | ****** | **2 ** 3 = 8**  |                                                                                                                |
-| ---------------------------- | ------ | ----------- | -------------------------------------------------------------------------------------------------------------- |
-| **Modulus (or modulo)**      | **%**  | **22 % 8 = 6**  |                                                                                                                |
-| **Integer (floor) division** | **//** | **22 // 8 = 2** | **when presented with integer operands, floor division truncates the decimal portion and returns an integer only** |
-| **True Division**                | **/**      | **22 / 8 2.75** | **true division returns the floating point quotient**                                                              |
-| **Multiplication**               | *****      | **3 * 5 = 15**  |                                                                                                                |
-| **Subtraction**                  | **-**      | **5 - 2 = 3**   |                                                                                                                |
-| **Addition**                     | **+**      | **2 + 2 = 4**   |                                                                                                                |
-## Order of Operations in Python
+# Order of Operations in Python
+
+1. `()` Brackets
+2. `**` Exponents
+3. `*` `/` `//` `%` Multiplication, Division, Integer Division, Modulus
+4. `+` `-` Addition, Subtraction
+
 ---
-1. () Brackets
-2. ** Exponents
-3.  * Multiplication , / Division, // Integer Division, % Modulus
-4. + Addition, - Subtraction
-## Data Types
----
+
+# Data Types
+
 A data type is a category for values, and every value belongs to exactly one data type.
 
-| Integers | -2, -1, 0, 1 ,2                          |
-| -------- | ---------------------------------------- |
-| Float    | -1.25 , -1.0 , -0.5, 0.0 , 0.5           |
-| Strings  | 'a' , 'aa' , 'aaa' , 'Hello World' , ' ' |
-| Boolean  | True / False                             |
-| None     | None                                     |
-## String Concatenation and Replication
+| Type | Examples |
+|------|----------|
+| **Integers** | `-2, -1, 0, 1, 2` |
+| **Float** | `-1.25, -1.0, -0.5, 0.0, 0.5` |
+| **Strings** | `'a'`, `'aa'`, `'aaa'`, `'Hello World'`, `' '` |
+| **Boolean** | `True` / `False` |
+| **None** | `None` |
+
 ---
-+ \* Means addition when two operands are ints or floating point numbers
-+ \* Means concatenation (putting together) when the two operands are strings
-+ >>> 'alice' + 'henry' results in - alicehenry
-	'alice' + 42 results in an error ( cannot convert 'int' object to a Str object implicitly)
-+ \* Means multiplication when the operands are ints or floating point nmbers
-+ \* Means String replication when the operands are one string and one int 
-	'alice' * 3 results in 'alicealicealice'
 
-## Course Coding Conventions
+# String Concatenation and Replication
+
+### Addition (`+`)
+- **With numbers**: `2 + 3 = 5`
+- **With strings**: `'alice' + 'henry'` → `'alicehenry'`
+- ⚠️ **Error**: `'alice' + 42` (cannot mix string and int)
+
+### Multiplication (`*`)
+- **With numbers**: `3 * 5 = 15`
+- **String replication**: `'alice' * 3` → `'alicealicealice'`
+
 ---
-• Hyphens or underscores are not allowed to be used in variable/function names.  
-• Spaces are not allowed in variable/function names.  
-• variables/functions cannot begin with a number.  
-• Special characters cannot be used in a variable/function name (ex. $)  
-• variable/function names are case sensitive  
-• By convention, all Python variables/functions should start with a lowercase letter and  
-every other word must begin with a capital letter (camelCase)  
-	ex. myVariableName  
-• Variable/function names should be descriptive to make your code more readable and  
-understandable.
 
-## Python Comments
+# Course Coding Conventions
+
+### Variable/Function Naming Rules
+- ❌ No hyphens or underscores
+- ❌ No spaces
+- ❌ Cannot begin with a number
+- ❌ No special characters (e.g., `$`)
+- ✅ Case sensitive
+- ✅ Use **camelCase** (start with lowercase, capitalize subsequent words)
+	- Example: `myVariableName`
+- ✅ Use descriptive names for readability
+
 ---
-Any text following a hash mark (#) is interpreted by Python as a comment and is  
-therefore ignored by the interpreter.  
-• During this course you will be required to comment each section of code with a  
-meaningful comment.  
-• The beginning of each program must start with a code header with the following  
-information:  
-	Name  
-	Student Number  
-	Date  
-	Time  
-	Brief description of the code
 
-## The Print() Function
+# Python Comments
+
+Comments begin with `#` and are ignored by Python.
+
+**Requirements:**
+- Comment each section of code meaningfully
+- Start each program with a header containing:
+	- Name
+	- Student Number
+	- Date
+	- Time
+	- Brief description
+
 ---
-• The print() function displays the string value inside the parentheses  
-on the screen.  
-• print(“hello”) or print(‘hello’) means that Python is calling the print()  
-function and a string value is being passed to the function as an  
-argument.
 
-## The Input() Function
+# The `print()` Function
+
+Displays text on the screen.
+
+```python
+print("hello")  # or print('hello')
+```
+
 ---
-• The input function waits for the user to type some text on the  
-keyboard and press ENTER.  
-• The input function captures information from the keyboard in String  
-format.  
-• myName = input() or myName = input(“what is your name”)  
-• The above line of script is telling Python to call the input function and  
-assign whatever string the user types to the variable myName.
 
-## The Len() Function
+# The `input()` Function
+
+Waits for user keyboard input and captures it as a **string**.
+
+```python
+myName = input()
+# or with a prompt:
+myName = input("What is your name? ")
+```
+
 ---
-• The len() function is passed a string as an argument. The function  
-returns an integer value of the number of characters in that string
 
-len(‘hello’) returns 5  
+# The `len()` Function
 
-firstName = ‘bill’  
-print(len(firstName)) returns 4
+Returns the number of characters in a string.
 
-## Casting Values
+```python
+len('hello')  # Returns 5
+
+firstName = 'bill'
+print(len(firstName))  # Returns 4
+```
+
 ---
-• The statement 29 + ‘hello’ returns an error because you cannot concatenate an int with a string.  
-• To have this operation work we must explicitly change (cast) the int 29 to the string ‘29’.  
-• To do this we must call the str() (pronounced “stir”) function  
-• str(29) + “hello”
 
-	str(29) returns '29'
-Therefore
-	'I am' + str(29) + 'years old' returns
-			'I am 29 years old'
+# Casting Values
 
-• The int() and float() functions will evaluate to integer and floating point forms of  
-the string value which is passed in as an argument.  
-• str(45) evaluates to ‘45’  
-• float(‘3.14’) evaluates to 3.14  
-• int(‘100’) evaluates to 100  
-• The input function always returns a string, so these functions come in handy  
-when the user types a number (i.e. a string of the number) which must be used in  
-calculations.
+Convert between data types using casting functions.
+
+### String Conversion
+```python
+str(29) + ' hello'  # '29 hello'
+'I am ' + str(29) + ' years old'  # 'I am 29 years old'
+```
+
+### Numeric Conversion
+```python
+str(45)         # Returns '45'
+float('3.14')   # Returns 3.14
+int('100')      # Returns 100
+```
+
+💡 **Note**: The `input()` function always returns a string, so use `int()` or `float()` to convert user input for calculations.
+
