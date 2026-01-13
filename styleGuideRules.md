@@ -18,3 +18,6 @@ Start each program with a header containing:
 
 ### Sectional Comments
 Above every code block should be a comment outlining it's function.
+
+### Indentation
+Always use the tab key to indent
