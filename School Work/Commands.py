@@ -1,4 +1,23 @@
 # OO Concepts
+print("Objects have two states: state and behavior.\n")
+
+# Operaters and Concatenation
+print("Hello" + " " + "World!")  # Concatenation
+
+print("5 + 3 =", 5 + 3,"\n")  # Addition
+
+print("5 * 3 =", 5 * 3,"\n")  # Multiplication
+
+print(" True Division")
+print("10 / 2 =", 10 / 2,"\n")  # Division
+
+print(" Integer Division")
+print("10 // 3 =", 10 // 3,"\n")  # Integer Division
+
+print("10 - 2 =", 10 - 2,"\n")  # Subtraction
+
+
+# Strings
 
 # Double Quotes vs Single Quotes
 
