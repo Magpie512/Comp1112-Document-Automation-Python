@@ -1,4 +1,5 @@
 # STYLE GUIDE
+1/3 of page
 
 ### camalCase
 Use **camelCase** (start with lowercase, capitalize subsequent words)
