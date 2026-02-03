@@ -25,3 +25,5 @@ words.append("!")  # Adding an element to the end
 print("List after appending '!':", words)
 words.insert(2, "really")  # Inserting an element at index 2
 print("List after inserting 'really' at index 2:", words)
+
+# Note how the list displays EVERYTHING between the commas

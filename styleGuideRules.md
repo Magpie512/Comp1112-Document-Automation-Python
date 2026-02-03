@@ -27,3 +27,6 @@ Always use the tab key to indent
 
 ### WHILE TRUE
 Never Never Never use while true
+
+### LISTS
+Always use square brackets [] for lists in python.
