@@ -27,8 +27,6 @@ Data isnt always transmitted in sequence but it does get resequenced in order on
 
 ### IP (Internet Protocol)
 
-
-
 ##### Notes
 - responsible for addressing and routing data packets across networks
 - assigns unique IP addresses to devices on a network
