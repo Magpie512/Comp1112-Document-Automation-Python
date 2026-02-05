@@ -16,8 +16,11 @@ print("10 // 3 =", 10 // 3,"\n")  # Integer Division
 
 print("10 - 2 =", 10 - 2,"\n")  # Subtraction
 
-
 # Strings
+
+
+# Raw Strings
+print(r"C:\Users\Name\Documents")  # Raw string to avoid escape characters
 
 # Double Quotes vs Single Quotes
 
@@ -28,7 +31,6 @@ print('It\'s a beautiful day!')  # Using escape character for single quote insid
 print("First Line\nSecond Line")  # New line escape character
 print("Column1\tColumn2")  # Tab escape character
 
-# Raw Strings
 
 # Triple Quotes
 
