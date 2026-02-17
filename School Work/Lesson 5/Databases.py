@@ -19,6 +19,11 @@ while True:
         # 4. DOB (Regex using \d shorthand for numeric digits)
         # Your slides show \d represents any numeric digit from 0 to 9
         dob_pattern = r'^\d\d/\d\d/\d\d\d\d$'
+        # ^ and $ are anchors to ensure the entire string matches the pattern
+        # ^ indicates the start of the string, and $ indicates the end of the string
+        # \d is digit, / is the literal character, and the pattern ensures the format MM/DD/YYYY
+        # Other Regex components like \s (whitespace) and \w (word character) are not needed for the DOB format
+        # Or Like [a-zA-Z] for letters, but since we are only looking for digits and slashes, \d and / suffice
         dob = pyip.inputRegex(dob_pattern, prompt="DOB (MM/DD/YYYY): ")
         
         # 5. City (Title Case)
