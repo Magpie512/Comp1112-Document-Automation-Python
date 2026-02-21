@@ -1,17 +1,12 @@
 j = 1
-for i in range(12,6,-2):
-    print(i-1)
-    j = j + 1
-    while not (j==3):
+for i in range(12,6,-2):# starts with i = 12 and j = 1
+    print(i-1) # 12 - 1 = 11 (prints 11)
+    j = j + 1 # j = 1 + 1 = 2 (j is now 2)
+    while not (j==3): # j is not equal to 3, so it enters the while loop
         print(j+1)
         if (j>1):
             break
 
-# starts with i = 12 and j = 1
-# 12 - 1 = 11 (prints 11)
-# j = 1 + 1 = 2 (j is now 2)
-
-# j is not equal to 3, so it enters the while loop
 # 2 + 1 = 3 (prints 3)
 
 # j is now 2, which is greater than 1, so it breaks out of the while loop
