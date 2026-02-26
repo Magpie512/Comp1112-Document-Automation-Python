@@ -20,3 +20,5 @@ print("The answer to testOne is:", testOne,
       "\nThe answer to testFive is:", testFive,
       "\nThe answer to testSix is:", testSix,
       "\nThe answer to testSeven is:", testSeven)
+
+# Remember // is integer or floor division, and % is modulus or remainder.
