@@ -6,3 +6,6 @@ for i in range(12,6,-2):
         print(j+1)
         if (j>1):
             break
+
+# ===== Output =====
+    print("End of iteration")
