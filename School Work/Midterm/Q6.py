@@ -3,7 +3,7 @@ def functionOne(stringOne):
     stringTwo = (stringOne *2)
     valueThree = (int(stringTwo) -2300)
     print(len(stringTwo))
-    return (valueThree)
+    return (valueThree) 
 
 def functionTwo(intOne):
     print(intOne%10)
