@@ -10,4 +10,5 @@ givenInput = "pynative"
 
 for index in range(len(givenInput)):
     if index % 2 == 0:
-        print(givenInput[index])
+        
+            print(givenInput[index])
