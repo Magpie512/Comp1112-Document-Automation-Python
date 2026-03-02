@@ -10,10 +10,12 @@ numList = ['1','2','3','4']
 def listScrambler(alphaList, numList):
     newList = [] # create an empty list to store the new list
     for i in range(len(alphaList)):
-        if (i+1) % 2 == 1:
+        if (i+1) % 2 == 1: #if odd
             newList.append(alphaList[i])
+            print( "line 15 with index of " + str(i) + ": " + str(newList), "\n")
         else:
             newList.append(random.choice(numList))
+            print( "line 18 with index of " + str(i) + ": " + str(newList), "\n")
     return newList
 
 print(listScrambler(alphaList, numList))

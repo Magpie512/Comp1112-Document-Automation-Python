@@ -4,7 +4,7 @@
 numbers = [10, 20, 30, 40, 50]
 total = 0
 for num in numbers:
-    total += num
+    total += num    # += is a shorthand for total = total + num
 print(f"Sum: {total}")
 
 # Example 2: Nested loops with 2D array
