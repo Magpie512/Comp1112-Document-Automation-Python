@@ -4,8 +4,8 @@ def testFunction():
     valueOne = 44
     print(valueOne)
 
-testFunction()
-print(valueOne)
+testFunction() # prints the local variable valueOne, which is 44
+print(valueOne) # prints the global variable valueOne, which is 7
 
 # The function testFunction() is called,
 # which assigns the value 56 to the local variable valueOne, 

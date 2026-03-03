@@ -1,5 +1,5 @@
 j = 1
-for i in range(12,6,-2):# starts with i = 12 and j = 1
+for i in range(12,6,-2):# starts with i = 12 and j = 1 | six is not included because the range is exclusive
     print(i-1) # 12 - 1 = 11 (prints 11)
     j = j + 1 # j = 1 + 1 = 2 (j is now 2)
     while not (j==3): # j is not equal to 3, so it enters the while loop

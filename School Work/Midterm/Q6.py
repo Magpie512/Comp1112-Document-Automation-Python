@@ -21,3 +21,9 @@ functionTwo(functionOne("23"))
 
 # The output of functionTwo will be the last digit of -2254, which is 4, and then it will print 
 # random numbers between 1 and 5 until it gets a 2, at which point it will print 2.
+
+# line 5 prints the length of stringTwo, which is 4
+# line 6 returns the value of valueThree, which is -2254
+# line 8 prints the last digit of intOne, which is 4
+# line 9 generates a random integer between 1 and 5 and assigns it to value
+# line 10 starts a while loop that continues until value is equal to 2
