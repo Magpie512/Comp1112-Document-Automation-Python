@@ -87,5 +87,69 @@ For better formatting with getcode() we use the following command in our command
 pip install beautifulsoup4
 ```
 
-# Writing to a file 
+# Writing to a File  
+In Python, writing to a file generally follows a simple pattern:
+
+```python
+file = open("file.txt", "w")   # "w" = write mode
+file.write("words")
+file.close()
+```
+
+### Common File Modes  
+| Mode | Meaning |
+|------|---------|
+| **"w"** | Write (overwrites the file) |
+| **"r"** | Read (default mode) |
+| **"a"** | Append (adds to the end of the file) |
+| **"w+"** | Write + Read |
+| **"a+"** | Append + Read |
+
+---
+
+# Reading a File
+
+```python
+file = open("file.txt", "r")   # "r" = read mode
+contents = file.read()
+file.close()
+
+print(contents)
+```
+
+### Other Useful Read Methods  
+- **`read()`** — reads the entire file  
+- **`readline()`** — reads one line at a time  
+- **`readlines()`** — returns a list of all lines  
+
+---
+
+# Appending to a File
+
+Appending lets you add new content without deleting what’s already there.
+
+```python
+file = open("file.txt", "a")   # "a" = append mode
+file.write("\nNew line added!")
+file.close()
+```
+
+---
+
+# Best Practice: Using `with`  
+Using `with` automatically closes the file for you — safer and cleaner.
+
+```python
+with open("file.txt", "w") as file:
+    file.write("Hello world!")
+```
+
+```python
+with open("file.txt", "r") as file:
+    print(file.read())
+```
+
+```python
+with open("file.txt", "a") as file:
+    file.write("\nMore text")
 ```

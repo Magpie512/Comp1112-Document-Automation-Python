@@ -34,7 +34,7 @@ def checkPrice(price):
         return True
     return False
 
-# Title Compounding
+# Title Compounding and length tracking
 titleWords = bookTitle.split()
 titleLen = len(titleWords)
 
