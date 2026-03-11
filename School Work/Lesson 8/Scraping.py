@@ -14,8 +14,8 @@ url = "https://books.toscrape.com/catalogue/category/books/young-adult_21/page-2
 bookTitle = "The Alien Club"
 ourPrice = "£51.77"
 
-WebUrl = urllib.request.urlopen(url)
-html = WebUrl.read()
+webUrl = urllib.request.urlopen(url)
+html = webUrl.read()
 
 soup = BeautifulSoup(html, 'html.parser')
 displayedText = soup.get_text()
@@ -23,7 +23,7 @@ words = displayedText.split()
 
 compPrice = None
 
-# detect a price  like £51.77
+# detect a price like £51.77
 def checkPrice(price):
     if len(price) > 1 and price[0] == '£': # EURO
         remainder = price[1:]
