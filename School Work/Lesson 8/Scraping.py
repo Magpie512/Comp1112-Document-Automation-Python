@@ -25,7 +25,7 @@ compPrice = None
 
 # detect a price like £51.77
 def checkPrice(price):
-    if len(price) > 1 and price[0] == '£': # EURO
+    if len(price) > 1 and price[0] == '£': # Pound actually
         remainder = price[1:]
         digits = "0123456789."
         for char in remainder:
