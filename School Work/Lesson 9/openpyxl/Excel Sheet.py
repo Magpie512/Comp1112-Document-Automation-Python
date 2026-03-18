@@ -64,18 +64,12 @@ for r in range (2,20):
 
 # Comparison
 
-# Build fast lookup sets of IDs who owe money
-bookIDs = {row[1] for row in bookList}
-libraryIDs = {row[1] for row in libraryList}
-parkingIDs = {row[1] for row in parkingList}
+#print(mainList)
 
-for row in mainList:
-    studentID = row[1]
+for i in range(len(mainList)):
+    if mainList[i][3] == "0":
+        eligibleList.append(mainList[i])
 
-    if (studentID not in bookIDs 
-        and studentID not in libraryIDs 
-        and studentID not in parkingIDs):
-        eligibleList.append(row)
 print(eligibleList)
 
 for row in eligibleList:
