@@ -13,11 +13,6 @@ words = displayedText.split() # Splits the text into individual words
 games = [] # Game list on certain platforms
 price = [] # Price list for each game ( in Euros)
 
-
-
-
-
-
 def output():
     file = open("game_prices.txt", "w")
     file.write("Games and their prices:\n")
