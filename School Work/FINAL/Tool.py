@@ -8,19 +8,21 @@ Game Price Point comparisson (that aint spelled right)
 import urllib.request
 from bs4 import BeautifulSoup
 import openpyxl # For Excel
-import os
+import os # Maybe remove if invalid. check with wayne
 
-# Potential violations ( Need to check if we ever learned os)
-if os.path.exists("gameP[rices.xlsx"):
+# Sheet Assignments
+if os.path.exists("gamePrices.xlsx"):# check with wayne
     book = openpyxl.load_workbook("gamePrices.xlsx")
 else:
     book = openpyxl.Workbook()
 
-# Sheet Assignments
 sheet = book.active
-sheet["A1"] = "Game"
-sheet["B1"] = "Site"
-sheet["C1"] = "Price"
+
+# Only write the headers if the file is new (organization)
+if not os.path.exists("gamePrices.xlsx"):# check with wayne
+    sheet["A1"] = "Game"
+    sheet["B1"] = "Site"
+    sheet["C1"] = "Price"
 
 # Array/List assignments
 siteList = []
@@ -38,47 +40,48 @@ playstation store
 EB Games
 '''
 
-# Asks user for a website(s)
+# Fixed non functional loop here too
+# Asks the user to enter one or more websites to scrape
 def siteInput():
-    siteCheck = False
-    while siteCheck == False:
+    while True:
         site = input("Enter a website: ")
         siteList.append(site)
         print("Added " + site + " to the list.")
         print("Would you like to add another? (Y/N)")
-        if input() == "N":
-            siteCheck = True
-        else:
-            siteCheck = False
-    
+        if input().strip().upper() == "N":
+            break
 
-# Asks user for a game(s)
+# Fixed non functional loop 
+# Asks the user to enter one or more game titles to search for
 def gameInput():
-    gameCheck = False
-    while gameCheck == False:
+    while True:
         game = input("Enter a game title: ")
         gameList.append(game)
+        print("Added " + game + " to the list.")
+        print("Would you like to add another? (Y/N)")
+        if input().strip().upper() == "N":
+            break
 
-# Function to scrape a website for pricetags
+# Gouged the Regex logic. kept bugging me that its too advanced
+# Scrapes a given website and returns the first price found near the game title
 def scrapePrice(site, game):
-    try:
-        html = urllib.request.urlopen(site).read()
-        soup = BeautifulSoup(html, "html.parser")
+    html = urllib.request.urlopen(site).read()
+    soup = BeautifulSoup(html, "html.parser")
+    text = soup.get_text()
 
-        # VERY simple example: look for the game name and a price near it
-        text = soup.get_text()
+    # If the game title is not on the page, return early (not found)
+    if game.lower() not in text.lower():
+        return "Not found"
 
-        if game.lower() not in text.lower():
-            return "Not found"
+    # Splits the page text into words and looks for the first price starting with $
+    words = text.split()
+    for word in words: # Simpler logic from my assignment in class
+        if word[0] == "$" and len(word) > 1:
+            price = word.replace(",", "")
+            return price
+    return "No price found"
 
-        # naive price search
-        import re
-        prices = re.findall(r"\$\d+\.\d{2}", text)
-        return prices[0] if prices else "No price found"
-
-    except Exception as error:
-        return "Error: " + str(error)
-
+# Writes each result to the spreadsheet and saves the file
 def writeToExcel(results):
     row = 2
     for game, site, price in results:
@@ -89,20 +92,20 @@ def writeToExcel(results):
 
     book.save("gamePrices.xlsx")
 
-# Program flow
-disclose()
-siteInput()
-
-for i in range(2):
-    gameInput()
+# Program Execution
+disclose() # Warning and explanation
+siteInput() # Websites
+gameInput() # Game Names
 
 results = []
 
+# Loop through every game/site combination and scrape the price 
 for game in gameList:
     for site in siteList:
         price = scrapePrice(site, game)
-        results.append((game, site, price))
+        results.append([game, site, price]) # Allowed method ^assignment
 
 writeToExcel(results)
 
-print("Results saved to game_prices.xlsx")
+# Style Guide fix
+print("Results saved to gamePrices.xlsx")
