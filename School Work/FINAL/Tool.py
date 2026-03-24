@@ -4,6 +4,8 @@ Mars Briggs
 2026-03-20
 Game Price Point comparisson (that aint spelled right)
 """
+# Need to add time check at midnight Unix time whatever
+
 # For Web scraping
 import urllib.request
 from bs4 import BeautifulSoup
