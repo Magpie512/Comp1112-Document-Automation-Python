@@ -14,12 +14,18 @@ import os # Mike says its okay
 import datetime
 import time
 
+# Function to wait for site refresh(or rather estimated refresh(real refresh could be 3am pst for all I know))
 def refresh():
     now = datetime.datetime.now()
     # Sets midnight by taking today's date and adding exactly one day (I imagine this will make jillian make fun of me but i probably most definitely deserve it)
     midnight = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(days=1)
     while datetime.datetime.now() < midnight:
         time.sleep(3600) # 3600 seconds = 1 hour
+
+""" not tonight my sweet prince
+# Open Program to read and the specific file too
+def openProgram():
+"""
 
 
 # Sheet Assignments
