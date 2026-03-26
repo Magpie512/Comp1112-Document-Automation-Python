@@ -4,16 +4,26 @@ Mars Briggs
 2026-03-20
 Game Price Point comparisson (that aint spelled right)
 """
-# Need to add time check at midnight Unix time whatever
+# need to map out the logic on a whiteboard to see if i can improve any logic
 
 # For Web scraping
 import urllib.request
 from bs4 import BeautifulSoup
 import openpyxl # For Excel
-import os # Maybe remove if invalid. check with wayne
+import os # Mike says its okay
+import datetime
+import time
+
+def refresh():
+    now = datetime.datetime.now()
+    # Sets midnight by taking today's date and adding exactly one day (I imagine this will make jillian make fun of me but i probably most definitely deserve it)
+    midnight = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(days=1)
+    while datetime.datetime.now() < midnight:
+        time.sleep(3600) # 3600 seconds = 1 hour
+
 
 # Sheet Assignments
-if os.path.exists("gamePrices.xlsx"):# check with wayne
+if os.path.exists("gamePrices.xlsx"):
     book = openpyxl.load_workbook("gamePrices.xlsx")
 else:
     book = openpyxl.Workbook()
@@ -21,7 +31,7 @@ else:
 sheet = book.active
 
 # Only write the headers if the file is new (organization)
-if not os.path.exists("gamePrices.xlsx"):# check with wayne
+if not os.path.exists("gamePrices.xlsx"):
     sheet["A1"] = "Game"
     sheet["B1"] = "Site"
     sheet["C1"] = "Price"
@@ -99,15 +109,22 @@ disclose() # Warning and explanation
 siteInput() # Websites
 gameInput() # Game Names
 
-results = []
+# Week long run time is probablt a bad idea but if this is for my gf then I can leave my main pc on that long 
+endDate = datetime.datetime.now() + datetime.timedelta(days=7) # DELTA DELTA DELTA
 
-# Loop through every game/site combination and scrape the price 
-for game in gameList:
-    for site in siteList:
-        price = scrapePrice(site, game)
-        results.append([game, site, price]) # Allowed method ^assignment
+# Run until the end of the week
+while datetime.datetime.now() < endDate:
+    results = []
 
-writeToExcel(results)
+    # Loop through every game/site combination and scrape the price 
+    for game in gameList:
+        for site in siteList:
+            price = scrapePrice(site, game)
+            results.append([game, site, price]) # Allowed method ^assignment
 
-# Style Guide fix
-print("Results saved to gamePrices.xlsx")
+    writeToExcel(results)
+
+    print("Results saved to gamePrices.xlsx")
+
+    # wait fo r site refresh
+    refresh()
