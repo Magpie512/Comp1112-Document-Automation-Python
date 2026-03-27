@@ -5,6 +5,7 @@ Mars Briggs
 Game Price Point comparisson (that aint spelled right)
 """
 # need to map out the logic on a whiteboard to see if i can improve any logic
+# also need to try except. thank you michael for 
 
 # For Web scraping
 import urllib.request
@@ -22,15 +23,23 @@ def refresh():
     while datetime.datetime.now() < midnight:
         time.sleep(3600) # 3600 seconds = 1 hour
 
-""" not tonight my sweet prince
 # Open Program to read and the specific file too
 def openProgram():
-"""
-
+    try:
+        os.startfile("gamePrices.xlsx")
+    except FileNotFoundError:
+        print("File not found.")
+    except Exception as e:
+        print("Couldn't open file: " + str(e))
 
 # Sheet Assignments
 if os.path.exists("gamePrices.xlsx"):
-    book = openpyxl.load_workbook("gamePrices.xlsx")
+    try:
+        book = openpyxl.load_workbook("gamePrices.xlsx")
+    except Exception as e:
+        print(str(e))
+        print("Couldn't open existing file. Creating new file.")
+        book = openpyxl.load_workbook("gamePrices.xlsx")
 else:
     book = openpyxl.Workbook()
 
@@ -83,21 +92,23 @@ def gameInput():
 # Gouged the Regex logic. kept bugging me that its too advanced
 # Scrapes a given website and returns the first price found near the game title
 def scrapePrice(site, game):
-    html = urllib.request.urlopen(site).read()
-    soup = BeautifulSoup(html, "html.parser")
-    text = soup.get_text()
+    try:
+        html = urllib.request.urlopen(site).read()
+        soup = BeautifulSoup(html, "html.parser")
+        text = soup.get_text()
+    except Exception as e:
+        print("Could not reach " + site + ": " + str(e))
+        return "Error reaching site"
 
-    # If the game title is not on the page, return early (not found)
     if game.lower() not in text.lower():
-        return "Not found"
+        return "Some games may not have been found in site selection."
 
-    # Splits the page text into words and looks for the first price starting with $
     words = text.split()
-    for word in words: # Simpler logic from my assignment in class
+    for word in words:
         if word[0] == "$" and len(word) > 1:
-            price = word.replace(",", "")
-            return price
+            return word.replace(",", "")
     return "No price found"
+
 
 # Writes each result to the spreadsheet and saves the file
 def writeToExcel(results):
@@ -107,8 +118,11 @@ def writeToExcel(results):
         sheet.cell(row=row, column=2).value = site
         sheet.cell(row=row, column=3).value = price
         row += 1
-
-    book.save("gamePrices.xlsx")
+    try:
+        book.save("gamePrices.xlsx")
+        print("Results saved to gamePrices.xlsx")
+    except PermissionError:
+        print("Close the Excel file first. Could not save.")
 
 # Program Execution
 disclose() # Warning and explanation
@@ -129,7 +143,7 @@ while datetime.datetime.now() < endDate:
             results.append([game, site, price]) # Allowed method ^assignment
 
     writeToExcel(results)
-
+    openProgram() # Open the program probably excel assume C: drive
     print("Results saved to gamePrices.xlsx")
 
     # wait fo r site refresh
