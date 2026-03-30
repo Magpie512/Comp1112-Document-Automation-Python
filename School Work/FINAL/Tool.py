@@ -4,7 +4,6 @@ Mars Briggs
 2026-03-30 1:15 PM
 Game Price Point comparison
 """
-
 import urllib.request
 from bs4 import BeautifulSoup
 import openpyxl
@@ -33,6 +32,13 @@ notifyUser              # notifies the user of finished execution
 openProgram             # opens the saved file via default program (mycase is LibreOffice Calc)
 waitUntilMidnight       # Delay execution until the next day
 deleteExistingFile      # removes old file.
+"""
+
+"""
+Thank you Michael. Remined me of us learning try except for approx 20 seconds.
+And Dom for OS confirmation
+Finally, thank you to my whiteboard and to the peer tutorVictor. You may not know python but you sure know how to think good :D
+
 """
 
 # Globals
@@ -109,8 +115,9 @@ def deleteExistingFile():
         except PermissionError as e:
             print("Error: " + str(e))
 
-# --- Scraping Logic Functions ---
+# Scraping Logic Functions
 
+# Fetches the page
 def fetchPage(targetSite):
     try:
         html = urllib.request.urlopen(targetSite).read()
@@ -120,24 +127,27 @@ def fetchPage(targetSite):
         print("Error reaching " + targetSite + ": " + str(e))
         return None
 
+# Finds the specific game
 def findGame(pageText, targetGame):
     return targetGame.lower() in pageText.lower()
 
+# Does it look like a pricetag function
 def isPriceSymbol(word):
-    # Simpler logic: check if the first character is a dollar sign
+    # My weakass dollar finder logic
     if len(word) > 1:
         if word[0] == "$":
             return True
     return False
 
+# Locates the price using the function above to find the symbol and thus the price
 def findPrice(pageText):
     words = pageText.split()
     for word in words:
         if isPriceSymbol(word):
-            # Just return the word found; no complex filtering
-            return word
+            return 
     return "No price found"
 
+# Scrape the price
 def scrapePrice(targetSite, targetGame):
     pageText = fetchPage(targetSite)
     if pageText is None:
@@ -146,25 +156,28 @@ def scrapePrice(targetSite, targetGame):
         return "Game not found"
     return findPrice(pageText)
 
-# --- Utility Functions ---
+# Utility Functions
 
+# Notifies the user of a successful save
 def notifyUser():
     print("Results saved to gamePrices.xlsx")
 
+# Opens the saved file via the default program ( you really should have one assigned anyway)
 def openProgram():
     try:
         os.startfile("gamePrices.xlsx")
     except Exception:
-        print("Could not open file automatically.")
+        print("Could not open file automatically.\nJust set a default program, man")
 
+# Delays the execution again until the next day
 def waitUntilMidnight():
     now = datetime.datetime.now()
     tomorrow = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(days=1)
     # Calculate exact sleep duration
-    seconds_to_wait = (tomorrow - now).total_seconds()
-    time.sleep(seconds_to_wait)
+    secondsToWait = (tomorrow - now).total_seconds()
+    time.sleep(secondsToWait)
 
-# --- Main Program Execution ---
+# Main Logic und Execution
 
 disclose()
 input("Press Enter to begin setup...")
@@ -190,7 +203,7 @@ while datetime.datetime.now() < endDate:
     notifyUser()
     openProgram()
     
-    # Wait until the next day, then clear and re-initialize
+    # Wait until the start of the next day, then clear and recreate the workbook
     waitUntilMidnight()
     deleteExistingFile()
     createWorkbook()
