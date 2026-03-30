@@ -1,146 +1,197 @@
 """
 Mars Briggs
 200561234
-2026-03-27 4:10 PM
-Game Price Point comparisson (that aint spelled right)
+2026-03-30 1:15 PM
+Game Price Point comparison
 """
-import urllib.request # For Web scraping
-from bs4 import BeautifulSoup # HTML parsing
-import openpyxl # For Excel
-import os # file operations
-import datetime # Time Calculations
-import time # Sleep wait function
 
-if os.path.exists("gamePrices.xlsx"): # Check if the Excel file already exists on disk
-    os.remove("gamePrices.xlsx") # Delete the old file to start fresh
+import urllib.request
+from bs4 import BeautifulSoup
+import openpyxl
+import os
+import datetime
+import time
 
-priceBook = openpyxl.Workbook() # Create a brand new workbook
-priceSheet = priceBook.active # Get the active sheet from the workbook
+"""
+Logic Guide:
+disclose                # Display user warning and use guide
+siteInput               # Collects sites into siteList
+gameInput               # Collects game titles into gameList
+vvv
+createWorkbook          # initialize excel sheet
+excelHeader             # create the column headers
+vvv
+fetchPage               # retrieve the target url
+findGame                # find the target game
+isPriceSymbol           # Identify price tag 
+findPrice               # Find the price
+scrapePrice             # Get the price
+vvv
+writeToExcel            # populates the rows
+saveExcel               # saves the file
+notifyUser              # notifies the user of finished execution
+openProgram             # opens the saved file via default program (mycase is LibreOffice Calc)
+waitUntilMidnight       # Delay execution until the next day
+deleteExistingFile      # removes old file.
+"""
 
-priceSheet["A1"] = "Game" # Label column A as Game
-priceSheet["B1"] = "Site" # Label column B as Site
-priceSheet["C1"] = "Price" # Label column C as Price
+# Globals
+priceBook = None
+priceSheet = None
+websiteList = []
+gameTitleList = []
 
-websiteList = [] # List to store user entered website URLs
-gameTitleList = [] # List to store user entered game titles
+# User Input
 
-# Function to wait for site refresh(or rather estimated refresh(real refresh could be 3am pst for all I know))
-def refresh():
-    now = datetime.datetime.now() # Gets the current time
-    midnight = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(days=1) # Sets midnight by taking today's date and adding exactly one day
-    while datetime.datetime.now() < midnight: # Loop until midnight is reached
-        time.sleep(3600) # 3600 seconds = 1 hour
+# User guide and warning
+def disclose():
+    print("This program compares game prices between websites.")
+    print("Provide sites that show game titles AND prices.")
+    print("Sites requiring login will not work.\n")
 
-# Open Program to read and the specific file too
+# Asks user for sites to use inside of a while loop to ensure multiple sites if needed
+def siteInput():
+    addingMore = True
+    while addingMore:
+        site = input("Enter a website: ").strip()
+        websiteList.append(site)
+        print("Added " + site + " to the list.")
+        print("Would you like to add another? (Y/N)")
+        if input().strip().upper() == "N":
+            addingMore = False
+
+# Asks user for games to use inside of the same logic as above
+def gameInput():
+    addingMore = True
+    while addingMore:
+        game = input("Enter a game title: ").strip()
+        gameTitleList.append(game)
+        print("Added " + game + " to the list.")
+        print("Would you like to add another? (Y/N)")
+        if input().strip().upper() == "N":
+            addingMore = False
+
+# Excel Management Functions 
+
+# Initializes the Excel workbook
+def createWorkbook():
+    global priceBook, priceSheet
+    priceBook = openpyxl.Workbook()
+    priceSheet = priceBook.active
+
+# Creates the column headers
+def excelHeader():
+    priceSheet["A1"] = "Game(s)"
+    priceSheet["B1"] = "Site(s)"
+    priceSheet["C1"] = "Price(s)"
+
+# Populates the rows of the newly created Excel sheet
+def writeToExcel(resultsList):
+    rowIndex = 2
+    for game, site, price in resultsList:
+        priceSheet.cell(row=rowIndex, column=1).value = game
+        priceSheet.cell(row=rowIndex, column=2).value = site
+        priceSheet.cell(row=rowIndex, column=3).value = price
+        rowIndex += 1 # christ did we learn this in class? can I assume this?
+
+# Save le file to excel
+def saveExcel():
+    try:
+        priceBook.save("gamePrices.xlsx")
+    except PermissionError as e:
+        print("Error: " + str(e))
+
+# deletes the existing file file its there
+def deleteExistingFile():
+    if os.path.exists("gamePrices.xlsx"):
+        try:
+            os.remove("gamePrices.xlsx")
+        except PermissionError as e:
+            print("Error: " + str(e))
+
+# --- Scraping Logic Functions ---
+
+def fetchPage(targetSite):
+    try:
+        html = urllib.request.urlopen(targetSite).read()
+        soup = BeautifulSoup(html, "html.parser")
+        return soup.get_text()
+    except Exception as e:
+        print("Error reaching " + targetSite + ": " + str(e))
+        return None
+
+def findGame(pageText, targetGame):
+    return targetGame.lower() in pageText.lower()
+
+def isPriceSymbol(word):
+    # Simpler logic: check if the first character is a dollar sign
+    if len(word) > 1:
+        if word[0] == "$":
+            return True
+    return False
+
+def findPrice(pageText):
+    words = pageText.split()
+    for word in words:
+        if isPriceSymbol(word):
+            # Just return the word found; no complex filtering
+            return word
+    return "No price found"
+
+def scrapePrice(targetSite, targetGame):
+    pageText = fetchPage(targetSite)
+    if pageText is None:
+        return "Error reaching site"
+    if not findGame(pageText, targetGame):
+        return "Game not found"
+    return findPrice(pageText)
+
+# --- Utility Functions ---
+
+def notifyUser():
+    print("Results saved to gamePrices.xlsx")
+
 def openProgram():
     try:
-        os.startfile("gamePrices.xlsx") # Launch the file with the OS default program
-    except FileNotFoundError:
-        print("File not found.") # Notify the user the file could not be found
-    except Exception as openError:
-        print("Couldn't open file: " + str(openError)) # Print error details
+        os.startfile("gamePrices.xlsx")
+    except Exception:
+        print("Could not open file automatically.")
 
-# Warning before execution
-def disclose():
-    print("This program compares game prices between websites.") # Print the program's purpose
-    print("Provide sites that show game titles AND prices.") # Warn about site requirements
-    print("Sites requiring login will not work.\n") # Warn that login-protected sites are unsupported
+def waitUntilMidnight():
+    now = datetime.datetime.now()
+    tomorrow = datetime.datetime(now.year, now.month, now.day) + datetime.timedelta(days=1)
+    # Calculate exact sleep duration
+    seconds_to_wait = (tomorrow - now).total_seconds()
+    time.sleep(seconds_to_wait)
 
-'''
-Sample sites
-playstation store 
-EB Games ( so actually this wont work unless we use something we havent learned yet)
-I was trying to find the game website i used before but holy christ i instead found a texas death penalty site. WHAT!!!
-'''
+# --- Main Program Execution ---
 
+disclose()
+input("Press Enter to begin setup...")
+siteInput()
+gameInput()
 
+# Initial Setup
+createWorkbook()
+excelHeader()
 
-# Asks the user to enter one or more websites to scrape
-def siteInput():
-    addingMore = True # Flag to control whether to keep asking for sites
-    while addingMore: # Loop until user chooses to stop
-        site = input("Enter a website: ").strip() # Ask the user to type a website URL
-        websiteList.append(site) # Add the entered URL to the list
-        print("Added " + site + " to the list.") # Confirm the site was added
-        print("Would you like to add another? (Y/N)") # Ask if the user wants to continue
-        if input().strip().upper() == "N": # Check if the user wants to stop
-            addingMore = False # Set flag to False to exit the loop
+endDate = datetime.datetime.now() + datetime.timedelta(days=7)
 
-# Asks the user to enter one or more game titles to search for
-def gameInput():
-    addingMore = True # Flag to control whether to keep asking for titles
-    while addingMore: # Loop until user chooses to stop
-        game = input("Enter a game title: ").strip() # Ask the user to type a game title
-        gameTitleList.append(game) # Add the entered title to the list
-        print("Added " + game + " to the list.") # Confirm the title was added
-        print("Would you like to add another? (Y/N)") # Ask if the user wants to continue
-        if input().strip().upper() == "N": # Check if the user wants to stop
-            addingMore = False # Set flag to False to exit the loop
-
-# Gouged the Regex logic. kept bugging me that its too advanced
-# Scrapes a given website and returns the first price found near the game title
-def scrapePrice(targetSite, targetGame):
-    try:
-        html = urllib.request.urlopen(targetSite).read() # Fetch raw HTML bytes from the target website
-        soup = BeautifulSoup(html, "html.parser") # Parse the HTML with BeautifulSoup
-        text = soup.get_text() # Extract all visible text from the parsed HTML
-    except Exception as scrapeError:
-        print("Could not reach " + targetSite + ": " + str(scrapeError)) # Notify user of the failed site
-        return "Error reaching site" # Return error string for the spreadsheet
-
-    if targetGame.lower() not in text.lower(): # Check if the game title appears on the page
-        return "Game not found on this site." # Return not-found message if absent
-
-    words = text.split() # Split page text into individual words for scanning
-    for word in words: # Iterate through each word looking for a price
-        if word[0] == "$" and len(word) > 1: # Check if the word is a price starting with $
-            return word.replace(",", "") # Return the price with commas stripped
-    return "No price found" # Fallback if no price was located on the page
-
-# Resets the Excel file by deleting and recreating it with fresh headers
-def resetExcel():
-    global priceBook, priceSheet # Access the global workbook and sheet variables
-    if os.path.exists("gamePrices.xlsx"): # Check if the file exists before trying to delete
-        os.remove("gamePrices.xlsx") # Delete the existing file
-    priceBook = openpyxl.Workbook() # Create a fresh workbook
-    priceSheet = priceBook.active # Get the active sheet
-    priceSheet["A1"] = "Game" # Re-label column A
-    priceSheet["B1"] = "Site" # Re-label column B
-    priceSheet["C1"] = "Price" # Re-label column C
-
-# Writes each result to the spreadsheet and saves the file
-def writeToExcel(resultsList):
-    rowIndex = 2 # Start from row 2 to preserve the header row
-    for game, site, price in resultsList: # Loop through each result in the list
-        priceSheet.cell(row=rowIndex, column=1).value = game # Write game title to column A
-        priceSheet.cell(row=rowIndex, column=2).value = site # Write site URL to column B
-        priceSheet.cell(row=rowIndex, column=3).value = price # Write scraped price to column C
-        rowIndex += 1 # Advance to the next row
-    try:
-        priceBook.save("gamePrices.xlsx") # Save the workbook to disk
-        print("Results saved to gamePrices.xlsx") # Confirm successful save
-    except PermissionError:
-        print("Close the Excel file first. Could not save.") # Prompt user to close the file
-
-# Program Execution
-disclose() # Warning and explanation
-input("press enter to continue") # Flush terminal buffer before taking user input
-siteInput() # Websites
-gameInput() # Game Names
-
-endDate = datetime.datetime.now() + datetime.timedelta(days=7) # Week long run time, DELTA DELTA DELTA
-
-# Run until the end of the week
 while datetime.datetime.now() < endDate:
-    cycleResults = [] # Create an empty list for this cycle's results
+    cycleResults = []
 
-    for gameTitle in gameTitleList: # Loop through every game title
-        for website in websiteList: # Loop through every website
-            foundPrice = scrapePrice(website, gameTitle) # Scrape the price for this game/site combo
-            cycleResults.append([gameTitle, website, foundPrice]) # Append the result to the list
+    for gameTitle in gameTitleList:
+        for website in websiteList:
+            foundPrice = scrapePrice(website, gameTitle)
+            cycleResults.append([gameTitle, website, foundPrice])
 
-    writeToExcel(cycleResults) # Write the results to Excel
-    openProgram() # Open the program probably excel assume C: drive
-    print("Results saved to gamePrices.xlsx") # Print a confirmation message
-    refresh() # Wait for site refresh
-    resetExcel() # Delete and recreate the file fresh for the next cycle
+    writeToExcel(cycleResults)
+    saveExcel()
+    notifyUser()
+    openProgram()
+    
+    # Wait until the next day, then clear and re-initialize
+    waitUntilMidnight()
+    deleteExistingFile()
+    createWorkbook()
+    excelHeader()
