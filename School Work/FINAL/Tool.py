@@ -13,29 +13,8 @@ import time
 import re
 
 """
-Logic Guide:
-disclose                # Display user warning and use guide
-siteInput               # Collects sites into siteList
-gameInput               # Collects game titles into gameList
-vvv
-createWorkbook          # initialize excel sheet
-excelHeader             # create the column headers
-vvv
-fetchPage               # retrieve the target url
-findGame                # find the target game
-isPriceSymbol           # Identify price tag 
-findPrice               # Find the price
-scrapePrice             # Get the price
-vvv
-writeToExcel            # populates the rows
-saveExcel               # saves the file
-notifyUser              # notifies the user of finished execution
-openProgram             # opens the saved file via default program (mycase is LibreOffice Calc)
-waitUntilMidnight       # Delay execution until the next day
-deleteExistingFile      # removes old file.
-"""
+ONE PURPOSE PER FUNCTION!                                                                                                                                                                                                                                          
 
-"""
 Thank you Michael. Remined me of us learning try except for approx 20 seconds.
 And Dom for OS confirmation
 Finally, thank you to my whiteboard and to the peer tutorVictor. You may not know python but you sure know how to think good :D
@@ -46,7 +25,7 @@ Finally, thank you to my whiteboard and to the peer tutorVictor. You may not kno
 priceBook = None
 priceSheet = None
 websiteList = []
-gameTitleList = []
+gameTitleList = [] #in hindsight i should have just named it gameList
 
 # User Input ===================================================================================
 
@@ -68,6 +47,7 @@ def siteInput():
             addingMore = False
 
 # Asks user for games to use inside of the same logic as above
+# TODO: Improve this with an ALL FUNCTION
 def gameInput():
     addingMore = True
     while addingMore:
@@ -75,10 +55,10 @@ def gameInput():
         gameTitleList.append(game)
         print("Added " + game + " to the list.")
         print("Would you like to add another? (Y/N)")
-        if input().strip().upper() == "N":
+        if input().strip().upper() == "N":                                                                                                                                                                                                                                                                                                                                   
             addingMore = False
 
-# Excel Management Functions ===========================================================================================
+# Excel Setup Functions ===========================================================================================
 
 # Initializes the Excel workbook
 def createWorkbook():
@@ -92,31 +72,16 @@ def excelHeader():
     priceSheet["B1"] = "Site(s)"
     priceSheet["C1"] = "Price(s)"
 
-# Populates the rows of the newly created Excel sheet
-def writeToExcel(resultsList):
-    rowIndex = 2
-    for game, site, price in resultsList:
-        priceSheet.cell(row=rowIndex, column=1).value = game
-        priceSheet.cell(row=rowIndex, column=2).value = site
-        priceSheet.cell(row=rowIndex, column=3).value = price
-        rowIndex += 1 # christ did we learn this in class? can I assume this?
-
-# Save le file to excel
-def saveExcel():
-    try:
-        priceBook.save("gamePrices.xlsx")
-    except PermissionError as e:
-        print("Error: " + str(e))
-
-# deletes the existing file file its there
-def deleteExistingFile():
-    if os.path.exists("gamePrices.xlsx"):
-        try:
-            os.remove("gamePrices.xlsx")
-        except PermissionError as e:
-            print("Error: " + str(e))
-
 # Scraping Logic Functions ==========================================================================================
+
+# Scrape the price
+def scrapePrice(targetSite, targetGame):
+    pageText = fetchPage(targetSite)
+    if pageText is None:
+        return "Error reaching site"
+    if not findGame(pageText, targetGame):
+        return "Game not found"
+    return findPrice(pageText)
 
 # Fetches the page
 def fetchPage(targetSite):
@@ -133,12 +98,12 @@ def findGame(pageText, targetGame):
     return targetGame.lower() in pageText.lower()
 
 # Does it look like a pricetag function
-def isPriceSymbol(word):
-    # My weakass dollar finder logic
-    if len(word) > 1:
-        if word[0] == "$":
-            return True
-    return False
+# def isPriceSymbol(word):
+#     # My weakass dollar finder logic which i now realise locks me into an american market but thats all my gf buys from so i t hink its fine
+#     if len(word) > 1:
+#         if word[0] == "$":
+#             return True
+#     return False
 
 # Locates the price using the function above to find the symbol and thus the price
 # def findPrice(pageText):
@@ -147,6 +112,8 @@ def isPriceSymbol(word):
 #         if isPriceSymbol(word):
 #             return 
 #     return "No price found"
+
+# Regex that improves the above function
 def findPrice(pageText):
     # Regex for prices like $59.99, $5, $1,299.00, etc.
     pricePattern = r"\$\s*\d{1,3}(?:,\d{3})*(?:\.\d{2})?"
@@ -157,15 +124,34 @@ def findPrice(pageText):
 
     return "No price found"
 
+# Excel Write =====================================================================================================
 
-# Scrape the price
-def scrapePrice(targetSite, targetGame):
-    pageText = fetchPage(targetSite)
-    if pageText is None:
-        return "Error reaching site"
-    if not findGame(pageText, targetGame):
-        return "Game not found"
-    return findPrice(pageText)
+# Populates the rows of the newly created Excel sheet
+def writeToExcel(resultsList):
+    rowIndex = 2
+    for game, site, price in resultsList:
+        priceSheet.cell(row=rowIndex, column=1).value = game
+        priceSheet.cell(row=rowIndex, column=2).value = site
+        priceSheet.cell(row=rowIndex, column=3).value = price
+        rowIndex += 1 # christ did we learn this in class? can I assume this?
+
+# Save le file to excel
+def saveExcel():
+    try:
+        priceBook.save("gamePrices.xlsx")
+
+    except PermissionError as e:
+        print("Error: " + str(e))
+
+# deletes the existing file file its there
+def deleteExistingFile():
+    if os.path.exists("gamePrices.xlsx"):
+        try:
+            os.remove("gamePrices.xlsx")
+
+        except PermissionError as e:
+            print("Error: " + str(e))
+
 
 # Utility Functions =======================================================================================================
 
@@ -191,7 +177,7 @@ def waitUntilMidnight():
 # Main Logic und Execution ===============================================================================================
 
 disclose()
-input("Press Enter to begin setup...")
+input("Press Enter to begin setup")
 siteInput()
 gameInput()
 
@@ -209,7 +195,7 @@ while datetime.datetime.now() < endDate:
     for gameTitle in gameTitleList:
         for website in websiteList:
             foundPrice = scrapePrice(website, gameTitle)
-            cycleResults.append([gameTitle, website, foundPrice])
+            cycleResults.append([gameTitle, website, foundPrice]) # thank you Gillian for showing me the way during one of our classes
 
     writeToExcel(cycleResults)
     saveExcel()
