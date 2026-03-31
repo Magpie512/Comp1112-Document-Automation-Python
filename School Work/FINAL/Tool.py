@@ -10,6 +10,7 @@ import openpyxl
 import os
 import datetime
 import time
+import re
 
 """
 Logic Guide:
@@ -140,12 +141,22 @@ def isPriceSymbol(word):
     return False
 
 # Locates the price using the function above to find the symbol and thus the price
+# def findPrice(pageText):
+#     words = pageText.split()
+#     for word in words:
+#         if isPriceSymbol(word):
+#             return 
+#     return "No price found"
 def findPrice(pageText):
-    words = pageText.split()
-    for word in words:
-        if isPriceSymbol(word):
-            return 
+    # Regex for prices like $59.99, $5, $1,299.00, etc.
+    pricePattern = r"\$\s*\d{1,3}(?:,\d{3})*(?:\.\d{2})?"
+
+    match = re.search(pricePattern, pageText)
+    if match:
+        return match.group().strip() # do we know group? idk man
+
     return "No price found"
+
 
 # Scrape the price
 def scrapePrice(targetSite, targetGame):
@@ -156,7 +167,7 @@ def scrapePrice(targetSite, targetGame):
         return "Game not found"
     return findPrice(pageText)
 
-# Utility Functions
+# Utility Functions =======================================================================================================
 
 # Notifies the user of a successful save
 def notifyUser():
@@ -167,7 +178,7 @@ def openProgram():
     try:
         os.startfile("gamePrices.xlsx")
     except Exception:
-        print("Could not open file automatically.\nJust set a default program, man")
+        print("Could not open file automatically.\nJust set a default program, man.")
 
 # Delays the execution again until the next day
 def waitUntilMidnight():
@@ -177,7 +188,7 @@ def waitUntilMidnight():
     secondsToWait = (tomorrow - now).total_seconds()
     time.sleep(secondsToWait)
 
-# Main Logic und Execution
+# Main Logic und Execution ===============================================================================================
 
 disclose()
 input("Press Enter to begin setup...")
@@ -188,8 +199,10 @@ gameInput()
 createWorkbook()
 excelHeader()
 
+# Sets when the loop will end
 endDate = datetime.datetime.now() + datetime.timedelta(days=7)
 
+# Main Loop
 while datetime.datetime.now() < endDate:
     cycleResults = []
 
