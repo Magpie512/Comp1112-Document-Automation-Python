@@ -47,7 +47,7 @@ priceSheet = None
 websiteList = []
 gameTitleList = []
 
-# User Input
+# User Input ===================================================================================
 
 # User guide and warning
 def disclose():
@@ -77,7 +77,7 @@ def gameInput():
         if input().strip().upper() == "N":
             addingMore = False
 
-# Excel Management Functions 
+# Excel Management Functions ===========================================================================================
 
 # Initializes the Excel workbook
 def createWorkbook():
@@ -115,7 +115,7 @@ def deleteExistingFile():
         except PermissionError as e:
             print("Error: " + str(e))
 
-# Scraping Logic Functions
+# Scraping Logic Functions ==========================================================================================
 
 # Fetches the page
 def fetchPage(targetSite):
