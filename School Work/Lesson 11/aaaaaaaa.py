@@ -1,7 +1,10 @@
 import docx
-doc = docx.Document("test.docx")
-fullText = []
+doc = docx.Document()
+doc.add_heading('Cat Photo',0)
 
-for words in doc.paragraphs:
-    fullText.append(words.text)
-print(fullText)
+paraObj1 = doc.add_paragraph('This is cat')
+
+paraObj1.add_run(',yo!')
+
+doc.add_picture('cat.jpg', width=docx.shared.Inches(2), height=docx.shared.Cm(7))
+doc.save("new.docx")
