@@ -11,6 +11,7 @@ import os
 import datetime
 import time
 import re
+import pyinputplus as pyip
 
 """
 ONE PURPOSE PER FUNCTION!                                                                                                                                                                                                                                          
@@ -39,7 +40,7 @@ def disclose():
 def siteInput():
     addingMore = True
     while addingMore:
-        site = input("Enter a website: ").strip()
+        site = pyip.inputURL("Enter a website: ").strip()
         websiteList.append(site)
         print("Added " + site + " to the list.")
         print("Would you like to add another? (Y/N)")
@@ -97,25 +98,8 @@ def fetchPage(targetSite):
 def findGame(pageText, targetGame):
     return targetGame.lower() in pageText.lower()
 
-# Does it look like a pricetag function
-# def isPriceSymbol(word):
-#     # My weakass dollar finder logic which i now realise locks me into an american market but thats all my gf buys from so i t hink its fine
-#     if len(word) > 1:
-#         if word[0] == "$":
-#             return True
-#     return False
-
-# Locates the price using the function above to find the symbol and thus the price
-# def findPrice(pageText):
-#     words = pageText.split()
-#     for word in words:
-#         if isPriceSymbol(word):
-#             return 
-#     return "No price found"
-
-# Regex that improves the above function
+# Regex finds the price
 def findPrice(pageText):
-    # Regex for prices like $59.99, $5, $1,299.00, etc.
     pricePattern = r"\$\s*\d{1,3}(?:,\d{3})*(?:\.\d{2})?"
 
     match = re.search(pricePattern, pageText)
