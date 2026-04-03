@@ -47,7 +47,6 @@ def siteInput():
             addingMore = False
 
 # Asks user for games to use inside of the same logic as above
-# TODO: Improve this with an ALL FUNCTION
 def gameInput():
     addingMore = True
     while addingMore:
