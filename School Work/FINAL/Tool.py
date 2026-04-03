@@ -113,14 +113,16 @@ def findGame(pageText, targetGame):
 #             return 
 #     return "No price found"
 
-# Regex that improves the above function
+# Regex that "improves" the above function. it currently finds first on page
+import re
+
 def findPrice(pageText):
-    # Regex for prices like $59.99, $5, $1,299.00, etc.
-    pricePattern = r"\$\s*\d{1,3}(?:,\d{3})*(?:\.\d{2})?"
+    # Regex for price patterns
+    pricePattern = r"\$\d{2}\.\d{2}"
 
     match = re.search(pricePattern, pageText)
     if match:
-        return match.group().strip() # do we know group? idk man
+        return match[0].strip()
 
     return "No price found"
 
@@ -151,7 +153,6 @@ def deleteExistingFile():
 
         except PermissionError as e:
             print("Error: " + str(e))
-
 
 # Utility Functions =======================================================================================================
 
