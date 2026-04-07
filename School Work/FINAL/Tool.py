@@ -18,6 +18,7 @@ ONE PURPOSE PER FUNCTION!
 Thank you Michael. Remined me of us learning try except for approx 20 seconds.
 And Dom for OS confirmation
 Finally, thank you to my whiteboard and to the peer tutorVictor. You may not know python but you sure know how to think good :D
+Also, thanks Gillian for helping with list managment
 
 """
 
