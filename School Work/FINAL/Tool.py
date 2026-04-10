@@ -17,8 +17,9 @@ ONE PURPOSE PER FUNCTION!
 
 Thank you Michael. Remined me of us learning try except for approx 20 seconds.
 And Dom for OS confirmation
-Thank you Gillian for helping me cement the idea of appending lists themselves 
-Finally, thank you to my whiteboard and to the peer tutor Victor. You may not know python but you sure know how to think good :D
+Finally, thank you to my whiteboard and to the peer tutorVictor. You may not know python but you sure know how to think good :D
+Also, thanks Gillian for helping with list managment
+
 """
 
 # Globals
@@ -32,9 +33,8 @@ gameTitleList = [] #in hindsight i should have just named it gameList
 # User guide and warning
 def disclose():
     print("This program compares game prices between websites.")
-    print("Provide the sites that show game titles AND prices.")
+    print("Provide sites that show game titles AND prices.")
     print("Sites requiring login will not work.\n")
-    print("Some sites have scanning countermeasures that may block this program.\nThe script cannot help with this for it is out of scope, sorry alex.\n")
 
 # Asks user for sites to use inside of a while loop to ensure multiple sites if needed
 def siteInput():
@@ -81,7 +81,7 @@ def scrapePrice(targetSite, targetGame):
         return "Error reaching site"
     if not findGame(pageText, targetGame):
         return "Game not found"
-    return findPrice(pageText, targetGame)
+    return findPrice(pageText)
 
 # Fetches the page
 def fetchPage(targetSite):
@@ -101,7 +101,7 @@ def findGame(pageText, targetGame):
 # def isPriceSymbol(word):
 #     # My weakass dollar finder logic which i now realise locks me into an american market but thats all my gf buys from so i t hink its fine
 #     if len(word) > 1:
-#         if word[0] == "$": 
+#         if word[0] == "$":
 #             return True
 #     return False
 
@@ -114,19 +114,15 @@ def findGame(pageText, targetGame):
 #     return "No price found"
 
 # Regex that "improves" the above function. it currently finds first on page
-def findPrice(pageText, targetGame):
-    pricePattern = r"\$\d+\.\d{2}"
-    words = pageText.split()
-    gameWords = targetGame.lower().split()
+import re
 
-    # scan the word list looking for where the game title starts
-    for i in range(len(words)):
-        chunk = [w.lower() for w in words[i:i + len(gameWords)]]
-        if chunk == gameWords:
-            # found game, now scan forward for the first price
-            for word in words[i:]:
-                if re.search(pricePattern, word):
-                    return re.search(pricePattern, word)[0]
+def findPrice(pageText):
+    # Regex for price patterns
+    pricePattern = r"\$\d{2}\.\d{2}"
+
+    match = re.search(pricePattern, pageText)
+    if match:
+        return match[0].strip()
 
     return "No price found"
 
@@ -139,7 +135,7 @@ def writeToExcel(resultsList):
         priceSheet.cell(row=rowIndex, column=1).value = game
         priceSheet.cell(row=rowIndex, column=2).value = site
         priceSheet.cell(row=rowIndex, column=3).value = price
-        rowIndex += 1
+        rowIndex += 1 # christ did we learn this in class? can I assume this?
 
 # Save le file to excel
 def saveExcel():
